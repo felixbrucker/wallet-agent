@@ -1,0 +1,18 @@
+{
+  "name": "wallet-agent",
+  "version": "1.0.0",
+  "license": "GPL-3.0",
+  "repository": "https://github.com/felixbrucker/wallet-agent.git",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "express-basic-auth": "^1.1.4",
+    "lowdb": "^1.0.0",
+    "moment": "^2.21.0"
+  }
+}

@@ -9,13 +9,14 @@ module.exports = class GenericWallet {
     this.pass = wallet.pass;
     this.ticker = wallet.ticker;
     this.type = wallet.type;
+    this.postUrl = wallet.removeUserAgent ? util.postUrlWithoutUserAgent : util.postUrl;
     this.stats = {};
     this.onInit();
   }
 
 
   async getDataForOldWallet() {
-    const walletData = await util.postUrl(`http://${this.hostname}:${this.port}`, {
+    const walletData = await this.postUrl(`http://${this.hostname}:${this.port}`, {
       jsonrpc: '2.0',
       id: 0,
       method: 'getinfo',
@@ -41,7 +42,7 @@ module.exports = class GenericWallet {
       result.total += result.staked;
     }
 
-    const bestBockHashData = await util.postUrl(`http://${this.hostname}:${this.port}`, {
+    const bestBockHashData = await this.postUrl(`http://${this.hostname}:${this.port}`, {
       jsonrpc: '2.0',
       id: 0,
       method: 'getbestblockhash',
@@ -52,7 +53,7 @@ module.exports = class GenericWallet {
         password: this.pass,
       },
     });
-    const latestBlockData = await util.postUrl(`http://${this.hostname}:${this.port}`, {
+    const latestBlockData = await this.postUrl(`http://${this.hostname}:${this.port}`, {
       jsonrpc: '2.0',
       id: 0,
       method: 'getblock',
@@ -71,7 +72,7 @@ module.exports = class GenericWallet {
   }
 
   async getDataForNewWallet() {
-    const networkData = await util.postUrl(`http://${this.hostname}:${this.port}`, {
+    const networkData = await this.postUrl(`http://${this.hostname}:${this.port}`, {
       jsonrpc: '2.0',
       id: 0,
       method: 'getnetworkinfo',
@@ -86,7 +87,7 @@ module.exports = class GenericWallet {
       version: networkData.result.subversion,
       connections: networkData.result.connections,
     };
-    const walletData = await util.postUrl(`http://${this.hostname}:${this.port}`, {
+    const walletData = await this.postUrl(`http://${this.hostname}:${this.port}`, {
       jsonrpc: '2.0',
       id: 0,
       method: 'getwalletinfo',
@@ -109,7 +110,7 @@ module.exports = class GenericWallet {
       result.total += result.unconfirmed;
     }
 
-    const blockchainData = await util.postUrl(`http://${this.hostname}:${this.port}`, {
+    const blockchainData = await this.postUrl(`http://${this.hostname}:${this.port}`, {
       jsonrpc: '2.0',
       id: 0,
       method: 'getblockchaininfo',
@@ -122,7 +123,7 @@ module.exports = class GenericWallet {
     });
     result.syncProgress = blockchainData.result.verificationprogress;
 
-    const latestBlockData = await util.postUrl(`http://${this.hostname}:${this.port}`, {
+    const latestBlockData = await this.postUrl(`http://${this.hostname}:${this.port}`, {
       jsonrpc: '2.0',
       id: 0,
       method: 'getblock',
@@ -153,7 +154,7 @@ module.exports = class GenericWallet {
   async determineIfOldWallet() {
     this.isOldWallet = true;
     try {
-      const networkData = await util.postUrl(`http://${this.hostname}:${this.port}`, {
+      const networkData = await this.postUrl(`http://${this.hostname}:${this.port}`, {
         jsonrpc: '2.0',
         id: 0,
         method: 'getnetworkinfo',

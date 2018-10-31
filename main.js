@@ -75,6 +75,8 @@ function getWalletClass(type) {
       return walletClasses.HexxcoinWallet;
     case 'cryptonight-wallet':
       return walletClasses.CryptonightWallet;
+    case 'bhd-wallet':
+      return walletClasses.BHDWallet;
   }
 }
 
